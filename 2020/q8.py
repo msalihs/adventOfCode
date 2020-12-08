@@ -4,7 +4,7 @@ class Solution:
 
     def solve(self, filepath):
         f = open(filepath, 'r')
-        result1, result2 = 0, 0
+        result1, result2, found = 0, 0, False
         inFile = list()
         operations = list()
 
@@ -31,28 +31,23 @@ class Solution:
             if cmd1 == 'nop': operations[i] = ('jmp', val1)
             elif cmd1 == 'jmp': operations[i] = ('nop', val1)
             
-            result2 = 0
-            index = 0
-            seen = set()
-
+            result2, index, seen = 0, 0, set()
             while index not in seen:
                 seen.add(index)
-
-                if index == len(operations):
-                    return result1, result2
-
                 cmd, val = operations[index]
-                if cmd == 'nop':
-                    index += 1
+                index += 1
+                if cmd == 'jmp':
+                    index += val - 1
                 elif cmd == 'acc':
                     result2 += val
-                    index += 1
-                elif cmd == 'jmp':
-                    index += val
-
+                if index == len(operations):
+                    found = True
+                    break
+            
+            if found: break
             operations[i] = (cmd1, val1)
 
-        return result1, -1
+        return result1, result2
 
 solver = Solution()
 print(solver.solve('2020/q8.txt'))
