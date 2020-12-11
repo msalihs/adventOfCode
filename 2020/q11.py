@@ -2,12 +2,6 @@ class Solution:
     def __init__(self):
         pass
 
-    def same(self, m1, m2):
-        for i in len(m1):
-            for j in len(m1[0]):
-                if m1[i][j] != m2[i][j]: return False
-        return True
-
     def solve(self, filepath):
         f = open(filepath, 'r')
         result1, result2 = 0, 0
