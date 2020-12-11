@@ -4,7 +4,7 @@ class Solution:
 
     def solve(self, filepath):
         f = open(filepath, 'r')
-        result1, result2, found = 0, 0, False
+        result1, result2 = 0, 0
         jolts = list()
 
         for line in f.readlines():
