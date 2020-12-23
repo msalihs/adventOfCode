@@ -22,13 +22,11 @@ class Solution:
         n = [int(x) for x in "315679824"]
 
         def move(n, it):
-            index = 0
-            i = 0
             hmap = {x: llNode(x) for x in n}
             for x in range(len(n)):
                 hmap[n[x]].next = hmap[n[(x + 1) % len(n)]]
             curr = hmap[n[0]]
-            while i < it:
+            for _ in range(it):
                 pick_start = curr.next
                 picked_vals = [
                     pick_start.val,
@@ -37,13 +35,12 @@ class Solution:
                 ]
                 dest = (curr.val - 1) if curr.val != 1 else len(n)
                 while dest in picked_vals:
-                    dest = len(n) if dest == 1 else (dest - 1)
+                    dest = (dest - 1) if dest != 1 else len(n)
                 curr.next = curr.next.next.next.next
                 dest_node = hmap[dest]
                 pick_start.next.next.next = dest_node.next
                 dest_node.next = pick_start
                 curr = curr.next
-                i += 1
             return hmap[1]
 
         # PART 1
