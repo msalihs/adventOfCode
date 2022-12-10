@@ -1,7 +1,3 @@
-from pathlib import Path
-from collections import defaultdict
-
-
 class Solution:
     def __init__(self):
         pass
@@ -53,13 +49,6 @@ class Solution:
                                 dj = 1 if dj > 0 else -1
                             rope[i][0] += di
                             rope[i][1] += dj
-                        if not (
-                            (rope[i - 1][0] - 1) <= rope[i][0] <= (rope[i - 1][0] + 1)
-                            and (rope[i - 1][1] - 1)
-                            <= rope[i][1]
-                            <= (rope[i - 1][1] + 1)
-                        ):
-                            raise ValueError(i, di, dj, rope, dx, dy)
                 result2.add(tuple(rope[-1]))
                 length -= 1
 
