@@ -7,9 +7,8 @@ class Solution:
         self.seen = dict()
         self.seen_hit = 0
     
-    def get_geodes(self, blueprints):
+    def get_geodes(self, blueprints, max_time):
         results = dict()
-        max_time = 32
         for num in blueprints:
             bp = blueprints[num]
             results[num] = 0
@@ -17,7 +16,7 @@ class Solution:
             self.seen = dict()
             iter = dict()
             self.seen_hit = 0
-
+            print(f'Processing blueprint {num}.')
             while self.queue:
                 orer, clayr, obsidianr, geoder, ore, clay, obsidian, geode, time = self.queue.popleft()
                 iter[time] = iter.get(time, 0) + 1
@@ -47,7 +46,7 @@ class Solution:
 
     def solve(self, filepath):
         f = open(filepath, "r")
-        result1, result2 = 0, 0
+        result1, result2 = 0, 1
         blueprints = defaultdict(dict)
         for reading in f.read().split("\n"):
             bpn, rem = reading.split(':')
@@ -58,10 +57,10 @@ class Solution:
             blueprints[num]['obsidian'] = (int(costs[3].split(' ')[1]), int(costs[3].split(' ')[4]))
             blueprints[num]['geode'] = (int(costs[4].split(' ')[1]), int(costs[4].split(' ')[4]))
 
-        results = self.get_geodes(blueprints=blueprints)
+        results = self.get_geodes(blueprints=blueprints, max_time=24)
         result1 = sum([k*v for k,v in results.items()])
 
-        result2 = self.get_geodes(blueprints={k:v for k,v in blueprints if k < 4})
+        results = self.get_geodes(blueprints={k:v for k,v in blueprints.items() if k < 4}, max_time=32)
         for _,v in results.items():
             result2 *= v
 
