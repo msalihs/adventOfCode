@@ -9,8 +9,7 @@ class Solution:
         f = open(filepath, "r")
         result1, result2 = 0, 0
         readings = f.read().split("\n")
-        beacons = list()
-        sensors = list()
+        beacons, sensors, distances = list(), list(), list()
 
         for i, reading in enumerate(readings):
             b, c = [r.split("=") for r in reading.split(":")]
@@ -21,12 +20,12 @@ class Solution:
         no_beacon = list()
 
         for (x_s, y_s), (x_b, y_b) in zip(sensors, beacons):
-            md = abs(x_s - x_b) + abs(y_s - y_b)
-            l = md - abs(target - y_s)
+            distances.append(abs(x_s - x_b) + abs(y_s - y_b))
+            l = distances[-1] - abs(target - y_s)
             if l > 0:
                 heapq.heappush(no_beacon, (x_s - l, x_s + l))
 
-        e = -(10 ** 9)
+        e = -(10**9)
         while no_beacon:
             sp, ep = heapq.heappop(no_beacon)
             if sp <= e:
@@ -41,8 +40,7 @@ class Solution:
 
         for x in range(0, target * 2 + 1):
             y_no_beacon = list()
-            for (x_s, y_s), (x_b, y_b) in zip(sensors, beacons):
-                md = abs(x_s - x_b) + abs(y_s - y_b)
+            for (x_s, y_s), md in zip(sensors, distances):
                 l = md - abs(x - x_s)
                 if l > 0:
                     heapq.heappush(y_no_beacon, (y_s - l, y_s + l))
@@ -52,7 +50,6 @@ class Solution:
                 if s <= y <= e:
                     y = e + 1
             if y < target * 2 + 1:
-                print(f"{(x, y)}")
                 result2 = x * 4000000 + y
                 break
 
