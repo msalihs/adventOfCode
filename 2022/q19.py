@@ -57,9 +57,11 @@ class Solution:
             blueprints[num]['obsidian'] = (int(costs[3].split(' ')[1]), int(costs[3].split(' ')[4]))
             blueprints[num]['geode'] = (int(costs[4].split(' ')[1]), int(costs[4].split(' ')[4]))
 
+        print(f'Executing Part 1')
         results = self.get_geodes(blueprints=blueprints, max_time=24)
         result1 = sum([k*v for k,v in results.items()])
-
+        
+        print(f'Executing Part 2')
         results = self.get_geodes(blueprints={k:v for k,v in blueprints.items() if k < 4}, max_time=32)
         for _,v in results.items():
             result2 *= v

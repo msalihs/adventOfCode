@@ -12,7 +12,6 @@ class Solution:
             [list("#"), list("#"), list("#"), list("#")],
             [list("##"), list("##")],
         ]
-        # self.rock_shapes = [[list('.#.'), list('###'),list('.#.')], [list('#'), list('#'), list('#'), list('#')]]
         self.movements = list(f.read())
         self.stack = deque([list("#########")])
         self.wind_idx = 0
