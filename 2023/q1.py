@@ -1,6 +1,3 @@
-import heapq
-
-
 class Solution:
     def __init__(self):
         pass
@@ -56,6 +53,7 @@ class Solution:
                 r -= 1
 
         return result1, result2
+
 
 solver = Solution()
 print(solver.solve("2023/q1.txt"))
