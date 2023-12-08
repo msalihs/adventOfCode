@@ -51,22 +51,17 @@ class Solution:
             hands.append((hand, int(bid)))
 
         ranking = list()
-
         for hand, bid in hands:
             power = sum([self.strength[hand[i]] * pow(15, 4 - i) for i in range(5)])
             ranking.append((power * self.handStrength(hand), bid))
-
         for rank, (power, bid) in enumerate(sorted(ranking)):
             result1 += (rank + 1) * bid
 
         self.strength["J"] = 1
-
         ranking = list()
-
         for hand, bid in hands:
             power = sum([self.strength[hand[i]] * pow(15, 4 - i) for i in range(5)])
             ranking.append((power * self.handStrength(self.findStrongest(hand)), bid))
-
         for rank, (power, bid) in enumerate(sorted(ranking)):
             result2 += (rank + 1) * bid
 

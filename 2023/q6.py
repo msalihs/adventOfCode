@@ -26,7 +26,6 @@ class Solution:
         max_t = math.floor((new_t + (new_t ** 2 - 4 * new_d) ** 0.5) / 2)
         min_t = math.ceil((new_t - (new_t ** 2 - 4 * new_d) ** 0.5) / 2)
         result2 = max_t - min_t + 1
-
         return result1, result2
 
 
