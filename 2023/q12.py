@@ -67,4 +67,4 @@ class Solution:
 
 
 solver = Solution()
-print(solver.solve("2023/q12_2.txt"))
+print(solver.solve("2023/q12.txt"))
