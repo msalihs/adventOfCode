@@ -36,20 +36,17 @@ class Solution:
     def solve(self, filepath):
         f = open(filepath, "r")
         readings = f.read().split("\n\n")
-        horizontal_grids = [reading.split("\n") for reading in readings]
-        vertical_grids = [[*zip(*grid)] for grid in horizontal_grids]
+        h_grids = [reading.split("\n") for reading in readings]
+        v_grids = [[*zip(*grid)] for grid in h_grids]
         results = list()
         for fix_smudge in [False, True]:
-            h_results = self.find_max_reflextion(
-                horizontal_grids, fix_smudge=fix_smudge
-            )
-            v_results = self.find_max_reflextion(vertical_grids, fix_smudge=fix_smudge)
+            h_r = self.find_max_reflextion(h_grids, fix_smudge=fix_smudge)
+            v_r = self.find_max_reflextion(v_grids, fix_smudge=fix_smudge)
             result = 0
-            for i, ((h_i, h_diff), (v_i, v_diff)) in enumerate(
-                zip(h_results, v_results)
-            ):
+            for ((h_i, h_diff), (v_i, v_diff)) in zip(h_r, v_r):
                 result += h_i * 100 if h_diff > v_diff else v_i
             results.append(result)
+
         return tuple(results)
 
 
