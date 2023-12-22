@@ -7,109 +7,72 @@ class Solution:
 
     def solve(self, filepath):
         f = open(filepath, "r")
-        result1, result2 = 10 ** 9, 0
+        result1, result2 = 0, 0
         grid = [[int(c) for c in row] for row in f.read().split("\n") if row]
-
-        # queue = [(grid[0][1], 0, 1, 0, 1), (grid[1][0], 1, 0, 1, 0)]
-        # seen = {(1,0):grid[1][0], (0,1):grid[0][1]}
-        # dest = (len(grid)-1, len(grid[0])-1)
-        # max_straight = 3
-        # while queue:
-        #     # print(queue)
-        #     heat, i, j, di, dj = heapq.heappop(queue)
-        #     if (i, j) == dest:
-        #         result1 = heat
-        #     # Moving down
-        #     if di > 0:
-        #         if 0 <= j - 1 and seen.get((i, j-1, 0, -1), 10**9) > (heat + grid[i][j-1]):
-        #             heapq.heappush(queue,(heat + grid[i][j-1], i, j-1, 0, -1))
-        #             seen[(i, j-1, 0, -1)] = heat + grid[i][j-1]
-        #         if (j+1) < len(grid[0]) and seen.get((i, j+1, 0, 1), 10**9) > (heat + grid[i][j+1]):
-        #             heapq.heappush(queue,(heat + grid[i][j+1], i, j+1, 0, 1))
-        #             seen[(i, j+1, 0, 1)] = heat + grid[i][j+1]
-        #         if di < max_straight and (i+1) < len(grid) and seen.get((i+1, j, di+1, 0), 10**9) > (heat + grid[i+1][j]):
-        #             heapq.heappush(queue,(heat + grid[i+1][j], i+1, j, di+1, 0))
-        #             seen[(i+1, j, di+1, 0)] = heat + grid[i+1][j]
-        #     # Moving up
-        #     if di < 0:
-        #         if 0 <= j - 1 and seen.get((i, j-1, 0, -1), 10**9) > (heat + grid[i][j-1]):
-        #             heapq.heappush(queue,(heat + grid[i][j-1], i, j-1, 0, -1))
-        #             seen[(i, j-1, 0, -1)] = heat + grid[i][j-1]
-        #         if (j+1) < len(grid[0]) and seen.get((i, j+1, 0, 1), 10**9) > (heat + grid[i][j+1]):
-        #             heapq.heappush(queue,(heat + grid[i][j+1], i, j+1, 0, 1))
-        #             seen[(i, j+1, 0, 1)] = heat + grid[i][j+1]
-        #         if di > -max_straight and 0 <= (i-1) and seen.get((i-1, j, di-1, 0), 10**9) > (heat + grid[i-1][j]):
-        #             heapq.heappush(queue,(heat + grid[i-1][j], i-1, j, di-1, 0))
-        #             seen[(i-1, j, di-1, 0)] = heat + grid[i-1][j]
-        #     # Moving left
-        #     if dj < 0:
-        #         if 0 <= i-1 and seen.get((i-1, j, -1, 0), 10**9) > (heat + grid[i-1][j]):
-        #             heapq.heappush(queue,(heat + grid[i-1][j], i-1, j, -1, 0))
-        #             seen[(i-1, j, -1, 0)] = heat + grid[i-1][j]
-        #         if (i+1) < len(grid) and seen.get((i+1, j, 1, 0), 10**9) > (heat + grid[i+1][j]):
-        #             heapq.heappush(queue,(heat + grid[i+1][j], i+1, j, 1, 0))
-        #             seen[(i+1, j, 1, 0)] = heat + grid[i+1][j]
-        #         if dj > -max_straight and 0 <= (j-1) and seen.get((i, j-1, 0, dj-1), 10**9) > (heat + grid[i][j-1]):
-        #             heapq.heappush(queue,(heat + grid[i][j-1], i, j-1, 0, dj-1))
-        #             seen[(i, j-1, 0, dj-1)] = heat + grid[i][j-1]
-        #     # Moving right
-        #     if dj > 0:
-        #         if 0 <= i-1 and seen.get((i-1, j, -1, 0), 10**9) > (heat + grid[i-1][j]):
-        #             heapq.heappush(queue,(heat + grid[i-1][j], i-1, j, -1, 0))
-        #             seen[(i-1, j, -1, 0)] = heat + grid[i-1][j]
-        #         if (i+1) < len(grid) and seen.get((i+1, j, 1, 0), 10**9) > (heat + grid[i+1][j]):
-        #             heapq.heappush(queue,(heat + grid[i+1][j], i+1, j, 1, 0))
-        #             seen[(i+1, j, 1, 0)] = heat + grid[i+1][j]
-        #         if dj < max_straight and (j+1) < len(grid[0]) and seen.get((i, j+1, 0, dj+1), 10**9) > (heat + grid[i][j+1]):
-        #             heapq.heappush(queue,(heat + grid[i][j+1], i, j+1, 0, dj+1))
-        #             seen[(i, j+1, 0, dj+1)] = heat + grid[i][j+1]
-        # print(len(seen))
-
-        queue = [(0, 0, 1, 0, 1), (0, 0, 1, 1, 0)]
+        start = (0, 0, 0, 1, 1)
+        queue = [start]
+        seen = {(0, 0, 1, 1)}
         dest = (len(grid) - 1, len(grid[0]) - 1)
-        max_straight = 3
-        seen = set()
-        while queue:
-            # print(queue)
-            heat, i, j, di, dj = heapq.heappop(queue)
-            if (i, j, di, dj) in seen:
-                continue
-            seen.add((i, j, di, dj))
-            if (i, j) == dest:
-                result1 = min(heat, result1)
-            # Moving down
-            if di > 0:
-                if 0 <= j - 1:
-                    heapq.heappush(queue, (heat + grid[i][j - 1], i, j - 1, 0, -1))
-                if (j + 1) < len(grid[0]):
-                    heapq.heappush(queue, (heat + grid[i][j + 1], i, j + 1, 0, 1))
-                if di < max_straight and (i + 1) < len(grid):
-                    heapq.heappush(queue, (heat + grid[i + 1][j], i + 1, j, di + 1, 0))
-            # Moving up
-            if di < 0:
-                if 0 <= j - 1:
-                    heapq.heappush(queue, (heat + grid[i][j - 1], i, j - 1, 0, -1))
-                if (j + 1) < len(grid[0]):
-                    heapq.heappush(queue, (heat + grid[i][j + 1], i, j + 1, 0, 1))
-                if di > -max_straight and 0 <= (i - 1):
-                    heapq.heappush(queue, (heat + grid[i - 1][j], i - 1, j, di - 1, 0))
-            # Moving left
-            if dj < 0:
-                if 0 <= i - 1:
-                    heapq.heappush(queue, (heat + grid[i - 1][j], i - 1, j, -1, 0))
-                if (i + 1) < len(grid):
-                    heapq.heappush(queue, (heat + grid[i + 1][j], i + 1, j, 1, 0))
-                if dj > -max_straight:
-                    heapq.heappush(queue, (heat + grid[i][j - 1], i, j - 1, 0, dj - 1))
-            # Moving right
-            if dj > 0:
-                if 0 <= i - 1:
-                    heapq.heappush(queue, (heat + grid[i - 1][j], i - 1, j, -1, 0))
-                if (i + 1) < len(grid):
-                    heapq.heappush(queue, (heat + grid[i + 1][j], i + 1, j, 1, 0))
-                if dj < max_straight and (j + 1) < len(grid[0]):
-                    heapq.heappush(queue, (heat + grid[i][j + 1], i, j + 1, 0, dj + 1))
 
+        def helper_add_to_queue(new_node, max_d, add_cost=True):
+            cost, i, j, di, dj = new_node
+            if (
+                abs(di) <= (max_d)
+                and abs(dj) <= (max_d)
+                and (i, j, di, dj) not in seen
+                and 0 <= i < len(grid)
+                and 0 <= j < len(grid[0])
+            ):
+                if add_cost:
+                    cost += grid[i][j]
+                heapq.heappush(queue, (cost, i, j, di, dj))
+                seen.add((i, j, di, dj))
+
+        while queue:
+            cost, i, j, di, dj = heapq.heappop(queue)
+            if (i, j) == dest:
+                result1 = cost
+                break
+            if di != 0:
+                delta = 1 if di > 0 else -1
+                helper_add_to_queue((cost, i + delta, j, di + delta, 0), 3)
+                helper_add_to_queue((cost, i, j + 1, 0, 1), 3)
+                helper_add_to_queue((cost, i, j - 1, 0, -1), 3)
+            if dj != 0:
+                delta = 1 if dj > 0 else -1
+                helper_add_to_queue((cost, i, j + delta, 0, dj + delta), 3)
+                helper_add_to_queue((cost, i + 1, j, 1, 0), 3)
+                helper_add_to_queue((cost, i - 1, j, -1, 0), 3)
+
+        start = (0, 0, 0, 1, 1)
+        queue = [start]
+        seen = {(0, 0, 1, 1)}
+        while queue:
+            cost, i, j, di, dj = heapq.heappop(queue)
+            if (i, j) == dest:
+                print(cost, i, j, di, dj)
+                result2 = cost
+                break
+            if di != 0:
+                delta = 1 if di > 0 else -1
+                if (cost, i, j, di, dj) != start:
+                    helper_add_to_queue((cost, i + delta, j, di + delta, 0), 10)
+                costp = cost + sum(
+                    [grid[i][jp] for jp in range(j + 1, j + 5) if jp < len(grid[0])]
+                )
+                helper_add_to_queue((costp, i, j + 4, 0, 4), 10, False)
+                costp = cost + sum([grid[i][jp] for jp in range(j - 4, j) if 0 <= jp])
+                helper_add_to_queue((costp, i, j - 4, 0, -4), 10, False)
+            if dj != 0:
+                delta = 1 if dj > 0 else -1
+                if (cost, i, j, di, dj) != start:
+                    helper_add_to_queue((cost, i, j + delta, 0, dj + delta), 10)
+                costp = cost + sum(
+                    [grid[ip][j] for ip in range(i + 1, i + 5) if ip < len(grid)]
+                )
+                helper_add_to_queue((costp, i + 4, j, 4, 0), 10, False)
+                costp = cost + sum([grid[ip][j] for ip in range(i - 4, i) if 0 <= ip])
+                helper_add_to_queue((costp, i - 4, j, -4, 0), 10, False)
         return result1, result2
 
 

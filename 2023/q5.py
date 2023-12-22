@@ -39,7 +39,7 @@ class Solution:
         queue = deque([])
         for i in range(0, len(seeds), 2):
             queue.append((seeds[i], seeds[i] + seeds[i + 1] - 1, "seed"))
-
+        print(seeds)
         while queue:
             begin, end, state = queue.popleft()
             next_ = mappings[state]

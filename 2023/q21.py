@@ -29,19 +29,19 @@ class Solution:
             plots = next_plots.copy()
 
         result1 = len(plots)
+
+        # Need at least 3*len(grid) iterations to be able to extrapolate quadratic
+        # equation coefficients.
         turns = 400
         plots = {start}
-        y = list()
-        x = list()
+        x, y = list(), list()
         for idx in range(turns):
             next_plots = set()
             while plots:
                 i, j = plots.pop()
                 for di, dj in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
-                    if grid[(i + di) % (len(grid))][(j + dj) % (len(grid[0]))] in {
-                        ".",
-                        "S",
-                    }:
+                    ip, jp = (i + di) % (len(grid)), (j + dj) % (len(grid[0]))
+                    if grid[ip][jp] in "S.":
                         next_plots.add((i + di, j + dj))
             plots = next_plots.copy()
             y.append(len(plots))
