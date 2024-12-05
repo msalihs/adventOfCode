@@ -1,3 +1,6 @@
+import itertools
+
+
 class Solution:
     def __init__(self):
         pass
@@ -10,36 +13,29 @@ class Solution:
         n = len(grid)
         m = len(grid[0])
 
+        def check_for_xmas(i, j, di, dj):
+            for k in range(4):
+                if (
+                    i + k * di < 0
+                    or i + k * di >= n
+                    or j + k * dj < 0
+                    or j + k * dj >= m
+                ):
+                    return False
+                if grid[i + k * di][j + k * dj] != "XMAS"[k]:
+                    return False
+            return True
+
         # PART 1
         for i in range(n):
             for j in range(m):
-                if grid[i][j] == 'X':
-                    if grid[i][j:j+4] == 'XMAS':
+                for di, dj in itertools.product([-1, 0, 1], repeat=2):
+                    if di == dj == 0:
+                        continue
+                    if check_for_xmas(i, j, di, dj):
                         result1 += 1
-                            
-                    if grid[i][j-3:j+1] == 'SAMX':
-                        result1 += 1
 
-                    if (i < n - 3):
-                        if j < (m-3) and grid[i+1][j+1] == 'M' and grid[i+2][j+2] == 'A' and grid[i+3][j+3] == 'S':
-                            result1 += 1
-
-                        if j >= 3 and grid[i+1][j-1] == 'M' and grid[i+2][j-2] == 'A' and grid[i+3][j-3] == 'S':
-                            result1 += 1
-
-                        if grid[i+1][j] == 'M' and grid[i+2][j] == 'A' and grid[i+3][j] == 'S':
-                            result1 += 1
-
-                    if (i > 2):
-                        if j >= 3 and grid[i-1][j-1] == 'M' and grid[i-2][j-2] == 'A' and grid[i-3][j-3] == 'S':
-                            result1 += 1
-
-                        if j < (m-3) and grid[i-1][j+1] == 'M' and grid[i-2][j+2] == 'A' and grid[i-3][j+3] == 'S':
-                            result1 += 1
-
-                        if grid[i-1][j] == 'M' and grid[i-2][j] == 'A' and grid[i-3][j] == 'S':
-                            result1 += 1
-
+        # PART 2
 
         for i in range(1, n - 1):
             for j in range(1, m - 1):
