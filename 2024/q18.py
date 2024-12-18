@@ -2,17 +2,17 @@ import heapq
 
 
 class Solution:
-    def __init__(self, debug=False):
-        self.debug = debug
+    def __init__(self):
+        pass
 
     def solve(self, filepath):
         result1, result2 = 0, 0
         f = open(filepath, "r")
         coords = [tuple([int(x) for x in c.split(",")]) for c in f.read().split("\n")]
-        n = 71
-        t = 1024
+        n = max([max(x + 1, y + 1) for x, y in coords])
+        dt = 1024
 
-        for t in [1024] + list(reversed(range(len(coords)))):
+        for t in [dt] + list(reversed(range(len(coords)))):
             queue = [(0, 0, 0)]
             seen = set((0, 0)) | set(coords[:t])
             target = (n - 1, n - 1)
@@ -28,10 +28,11 @@ class Solution:
                     if (ip, jp) == target:
                         result = l + 1
 
-            if t == 1024:
+            if t == dt:
                 result1 = result
-            elif result > 0:
-                result2 = t + 1
+            elif result == 0:
+                result2 = coords[t - 1]
+            else:
                 break
 
         return result1, result2
