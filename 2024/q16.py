@@ -23,6 +23,7 @@ class Solution:
         costs = {}
         seen = set()
         idx = 0
+        max_size = 0
 
         while queue:
             cost, _, p, dir, path = heapq.heappop(queue)
@@ -35,6 +36,7 @@ class Solution:
             if p == end and cost <= result1:
                 seen |= path
                 result1 = cost
+                break
 
             for d, val in [(1, 1), (1j, 1001), (-1j, 1001)]:
                 costp = cost + val
@@ -44,6 +46,9 @@ class Solution:
                 if pp in valid_points and pp not in path:
                     heapq.heappush(queue, (costp, idx, pp, dirp, path | {pp}))
 
+            max_size = max(max_size, len(queue))
+
+        print(max_size, idx)
         result2 = len(seen)
 
         return result1, result2
